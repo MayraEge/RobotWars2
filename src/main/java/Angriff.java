@@ -5,7 +5,10 @@ public class Angriff {
         this.spielfeld = spielfeld;
     }
 
-    public void greifeAn(int x, int y, char richtung, char avatar) {
+    public void greifeAn(Spieler angreifer, char richtung) {
+        int x = angreifer.getX();
+        int y = angreifer.getY();
+
         switch (richtung) {
             case 'i':
                 x = (x > 0) ? x - 1 : x;
@@ -19,6 +22,8 @@ public class Angriff {
             case 'l':
                 y = (y < spielfeld.getSize() - 1) ? y + 1 : y;
                 break;
+            default:
+                throw new IllegalArgumentException("Ungueltige Richtung: " + richtung);
         }
 
         if (spielfeld.istSpielerAufFeld(x, y)) {

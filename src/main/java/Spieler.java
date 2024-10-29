@@ -1,4 +1,5 @@
 public class Spieler {
+    public String getAvatar;
     private String name;
     private char avatar;
     private int x;

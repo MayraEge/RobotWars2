@@ -1,13 +1,9 @@
 import java.util.Scanner;
-import java.util.Random;
-import java.util.Objects;
 
 public class Hauptspiel {
-    private static Spielfeld spielfeld = new Spielfeld();
-    private static Angriff angriff = new Angriff(spielfeld);
-    private static Bewegung bewegung = new Bewegung(spielfeld);
-    private static Spieler spieler1;
-    private static Spieler spieler2;
+    private static boolean gameOver = false;
+    public static Spieler spieler1;
+    public static Spieler spieler2;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -24,36 +20,24 @@ public class Hauptspiel {
         String name1 = scanner.nextLine();
         System.out.println("Spieler 1, waehle Deinen Avatar (*, §, #, $): ");
         char avatar1 = scanner.next().charAt(0);
-        spieler1 = new Spieler(name1, avatar1, 0, 0);
-        spielfeld.setzeSpieler(spieler1.getX(), spieler1.getY(), spieler1.getAvatar());
+        Spieler spieler1 = new Spieler(name1, avatar1, 0, 0);
 
-        //spieler 2
         System.out.println("Spieler 2, gib deinen Namen ein: ");
-        scanner.nextLine(); //scanner leeren
+        scanner.nextLine(); // Scanner leeren
         String name2 = scanner.nextLine();
         System.out.println("Spieler 2, waehle Deinen Avatar (*, §, #, $): ");
         char avatar2 = scanner.next().charAt(0);
-        spieler2 = new Spieler(name2, avatar2, 9, 9);
+        Spieler spieler2 = new Spieler(name2, avatar2, 9, 9);
+
+        Spielfeld spielfeld = new Spielfeld(10);
+        spielfeld.setzeSpieler(spieler1.getX(), spieler1.getY(), spieler1.getAvatar());
         spielfeld.setzeSpieler(spieler2.getX(), spieler2.getY(), spieler2.getAvatar());
 
-        while (true) {
-            spielfeld.zeigeSpielfeld();
-            System.out.println(spieler1.getName() + ", bewege dich (w/a/s/d) oder greife an (i/j/k/l): ");
-            handleAktion(scanner.next().charAt(0), spieler1);
-            if (spieler1.istTot() || spieler2.istTot()) break;
-            spielfeld.zeigeSpielfeld();
-            System.out.println(spieler2.getName() + ", bewege dich (w/a/s/d) oder greife an (i/j/k/l): ");
-            handleAktion(scanner.next().charAt(0), spieler2);
-            if (spieler1.istTot() || spieler2.istTot()) break;
-        }
-        System.out.println("Spiel beendet!");
-    }
+        Bewegung bewegung = new Bewegung(spielfeld);
+        Angriff angriff = new Angriff(spielfeld);
 
-    private static void handleAktion(char aktion, Spieler spieler) {
-        if (aktion == 'w' || aktion == 'a' || aktion == 's' || aktion == 'd') {
-            Hauptspiel.bewegung.bewegeSpieler(spieler, aktion);
-        } else if (aktion == 'i' || aktion == 'j' || aktion == 'k' || aktion == 'l') {
-            Hauptspiel.angriff.greifeAn(spieler, aktion);
-        }
+        SpielerManager spielerManager = new SpielerManager(spieler1, spieler2, spielfeld, bewegung, angriff);
+        spielerManager.starteSpiel();
     }
 }
+
