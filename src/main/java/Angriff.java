@@ -46,11 +46,10 @@ public class Angriff {
             System.out.println("Angriff verfehlt!");
         }
     }
-
     private Spieler findeSpieler(char avatar) {
-        if (Hauptspiel.spieler1.getAvatar() == avatar) {
+        if (Hauptspiel.spieler1 != null && Hauptspiel.spieler1.getAvatar() == avatar) {
             return Hauptspiel.spieler1;
-        } else if (Hauptspiel.spieler2.getAvatar() == avatar) {
+        } else if (Hauptspiel.spieler2 != null && Hauptspiel.spieler2.getAvatar() == avatar) {
             return Hauptspiel.spieler2;
         }
         return null;
