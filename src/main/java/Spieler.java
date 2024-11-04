@@ -1,25 +1,27 @@
-public class Spieler {
-    public String getAvatar;
-    private String name;
-    private char avatar;
+public class Spieler implements Movable, Attackable {
     private int x;
     private int y;
+    private char avatar;
+    private String name;
+    private Spielfeld spielfeld;
+    private boolean tot;
     private int leben;
+    private int bewegung;
+    private int angriff;
+    private int verteidigung;
 
-    public Spieler(String name, char avatar, int startX, int startY) {
-        this.name = name;
-        this.avatar = avatar;
+    public Spieler(int startX, int startY, char avatar, Spielfeld spielfeld, int bewegung, int angriff, int verteidigung) {
         this.x = startX;
         this.y = startY;
-        this.leben = 2;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public char getAvatar() {
-        return avatar;
+        this.avatar = avatar;
+        this.spielfeld = spielfeld;
+        this.tot = false;
+        this.leben = 10; // Beispiel: Jeder Spieler startet mit 10 Leben
+        this.bewegung = bewegung;
+        this.angriff = angriff;
+        this.verteidigung = verteidigung;
+        spielfeld.setzeSpieler(x, y, avatar);
+        spielfeld.addSpieler(this);
     }
 
     public int getX() {
@@ -30,22 +32,57 @@ public class Spieler {
         return y;
     }
 
-    public int getLeben() {
-        return leben;
-    }
-
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public void verliereLeben() {
-        if (leben > 0) {
-            leben--;
-        }
+    public char getAvatar() {
+        return avatar;
     }
 
     public boolean istTot() {
-        return leben <= 0;
+        return tot;
+    }
+
+    public void setTot(boolean tot) {
+        this.tot = tot;
+    }
+
+    public int getLeben() {
+        return leben;
+    }
+
+    public int getBewegung() {
+        return bewegung;
+    }
+
+    public int getAngriff() {
+        return angriff;
+    }
+
+    public int getVerteidigung() {
+        return verteidigung;
+    }
+
+    public void verliereLeben(int schaden) {
+        if (leben > 0) {
+            leben -= schaden;
+            if (leben <= 0) {
+                leben = 0;
+                setTot(true);
+                spielfeld.removeSpieler(this);
+            }
+        }
+    }
+
+    @Override
+    public void move(char direction) {
+        // Die Bewegungslogik wird in der Bewegung-Klasse gehandhabt
+    }
+
+    @Override
+    public void attack(Roboter target) {
+        // Angriffslogik
     }
 }

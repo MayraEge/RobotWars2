@@ -38,7 +38,6 @@ public class SpielerManager {
                 if (spieler1.istTot() || spieler2.istTot()) gameOver = true;
             }
         }
-
         System.out.println("Spiel beendet!");
     }
 
