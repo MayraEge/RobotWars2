@@ -31,7 +31,7 @@ public class Angriff {
 
             Spieler getroffenerSpieler = findeSpieler(getroffenerAvatar);
             if (getroffenerSpieler != null) {
-                getroffenerSpieler.verliereLeben();
+                getroffenerSpieler.verliereLeben(1);
 
                 System.out.println("Spieler " + angreifer.getAvatar + " hat Spieler " + getroffenerAvatar + " getroffen!");
                 System.out.println("Spieler " + getroffenerAvatar + " hat jetzt " + " Leben.");

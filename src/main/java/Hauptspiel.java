@@ -47,8 +47,7 @@ public class Hauptspiel {
             }
         } while (name2.length() > 8);
         //return name2;
-
-        // Scanner leeren? scanner.nextLine();
+        scanner.nextLine();
         System.out.println("Spieler 2, waehle Deinen Avatar (*, §, #, $): ");
         char avatar2 = scanner.next().charAt(0);
 
@@ -67,10 +66,10 @@ public class Hauptspiel {
     }
     private static int[] waehleStats(Scanner scanner) {
         int movement, attackStrength, attackRange, defense, health;
-        int totalPoints = 10;
+        int totalPoints = 15;
 //hier nochmal genauer schauen
         do {
-            System.out.println("Verteile 10 Punkte auf Bewegung, Angriffsstärke und Verteidigung.");
+            System.out.println("Verteile 15 Punkte auf Bewegung, Angriffsstärke und Verteidigung.");
             System.out.print("Bewegung: ");
             movement = scanner.nextInt();
             System.out.print("Angriffsstärke: ");
@@ -84,7 +83,7 @@ public class Hauptspiel {
 
 
             if (movement + attackStrength + attackRange + defense + health > totalPoints) {
-                System.out.println("Die Summe der Punkte darf 10 nicht überschreiten. Bitte erneut versuchen.");
+                System.out.println("Die Summe der Punkte darf 15 nicht überschreiten. Bitte erneut versuchen.");
             }
         } while (movement + attackStrength + attackRange + defense + health > totalPoints);
 

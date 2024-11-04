@@ -1,4 +1,4 @@
-public class Roboter implements Movable, Attackable {
+abstract class Roboter implements Movable, Attackable {
     private int movement;
     private int attackStrength;
     private int attackRange;

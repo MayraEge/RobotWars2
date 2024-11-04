@@ -1,14 +1,16 @@
 public class Spieler implements Movable, Attackable {
+    public String getAvatar;
     private int x;
     private int y;
     private char avatar;
     private String name;
     private Spielfeld spielfeld;
     private boolean tot;
-    private int leben;
-    private int bewegung;
-    private int angriff;
-    private int verteidigung;
+    private int health;
+    private int movement;
+    private int attackStrength;
+    private int attackRange;
+    private int defense;
 
     public Spieler(int startX, int startY, char avatar, Spielfeld spielfeld, int bewegung, int angriff, int verteidigung) {
         this.x = startX;
@@ -16,10 +18,10 @@ public class Spieler implements Movable, Attackable {
         this.avatar = avatar;
         this.spielfeld = spielfeld;
         this.tot = false;
-        this.leben = 10; // Beispiel: Jeder Spieler startet mit 10 Leben
-        this.bewegung = bewegung;
-        this.angriff = angriff;
-        this.verteidigung = verteidigung;
+        this.health = 10; // Beispiel: Jeder Spieler startet mit 10 Leben
+        this.movement = bewegung;
+        this.attackStrength = angriff;
+        this.defense = verteidigung;
         spielfeld.setzeSpieler(x, y, avatar);
         spielfeld.addSpieler(this);
     }
@@ -49,31 +51,20 @@ public class Spieler implements Movable, Attackable {
         this.tot = tot;
     }
 
-    public int getLeben() {
-        return leben;
-    }
-
-    public int getBewegung() {
-        return bewegung;
-    }
-
-    public int getAngriff() {
-        return angriff;
-    }
-
-    public int getVerteidigung() {
-        return verteidigung;
-    }
-
     public void verliereLeben(int schaden) {
-        if (leben > 0) {
-            leben -= schaden;
-            if (leben <= 0) {
-                leben = 0;
+        if (health > 0) {
+            health -= schaden;
+            if (health <= 0) {
+                health = 0;
                 setTot(true);
                 spielfeld.removeSpieler(this);
             }
         }
+    }
+
+    @Override
+    public void move(int deltaX, int deltaY) {
+
     }
 
     @Override
@@ -84,5 +75,9 @@ public class Spieler implements Movable, Attackable {
     @Override
     public void attack(Roboter target) {
         // Angriffslogik
+    }
+
+    public String getName() {
+        return name;
     }
 }
