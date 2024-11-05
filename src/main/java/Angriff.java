@@ -1,8 +1,11 @@
-public class Angriff {
+public class Angriff implements Movable{
     private Spielfeld spielfeld;
 
     public Angriff(Spielfeld spielfeld) {
         this.spielfeld = spielfeld;
+    }
+    public void move(Movable obj, char richtung){
+        obj.move(richtung);
     }
 
     public void greifeAn(Spieler angreifer, char richtung) {
@@ -31,10 +34,10 @@ public class Angriff {
 
             Spieler getroffenerSpieler = findeSpieler(getroffenerAvatar);
             if (getroffenerSpieler != null) {
-                getroffenerSpieler.verliereLeben(1);
+                getroffenerSpieler.move();
 
-                System.out.println("Spieler " + angreifer.getAvatar + " hat Spieler " + getroffenerAvatar + " getroffen!");
-                System.out.println("Spieler " + getroffenerAvatar + " hat jetzt " + " Leben.");
+                System.out.println("Spieler " + angreifer.getAvatar() + " hat Spieler " + getroffenerAvatar + " getroffen!");
+                System.out.println("Spieler " + getroffenerAvatar + " hat jetzt "+ getroffenerSpieler.getLeben() + " Leben.");
                 if (getroffenerSpieler.istTot()) {
                     System.out.println("Spieler " + getroffenerAvatar + " ist tot!");
 
@@ -46,6 +49,7 @@ public class Angriff {
             System.out.println("Angriff verfehlt!");
         }
     }
+
     private Spieler findeSpieler(char avatar) {
         if (Hauptspiel.spieler1 != null && Hauptspiel.spieler1.getAvatar() == avatar) {
             return Hauptspiel.spieler1;

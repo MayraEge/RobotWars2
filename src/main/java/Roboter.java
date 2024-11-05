@@ -1,40 +1,27 @@
-abstract class Roboter implements Movable, Attackable {
-    private int movement;
-    private int attackStrength;
-    private int attackRange;
-    private int defense;
-    private int health;
-    private int x;
-    private int y;
-
-    public Roboter(int movement, int attackStrength, int attackRange, int health, int startX, int startY, int defense){
-        this.movement = movement;
-        this.attackStrength = attackStrength;
-        this.attackRange = attackRange;
-        this.health = health;
-        this.defense = defense;
-        this.x = startX;
-        this.y = startY;
-    }
-    //getter und setter
-    public int getMovement() { return movement; }
-    public int getAttackStrength() { return attackStrength; }
-    public int getAttackRange() { return attackRange; }
-    public int getHealth() { return health; }
-    public int getDefense() { return defense; }
-    public int getX() {return x;}
-    public int getY() {return y;}
-    public void setX (int x) {this.x = y;}
-    public void setY (int y) {this.y = y;}
-
-    @Override
-    public void attack(Roboter target){
-        //Angriffslogik
+public abstract class Roboter extends RobotPlayer {
+    public Roboter(int movement, int attackStrength, int attackRange, int health, int startX, int startY, int defense) {
+        super(startX, startY, movement, attackStrength, attackRange, defense, health);
     }
 
     @Override
-    public void move(int deltaX, int deltaY) {
-        this.x += deltaX;
-        this.y += deltaY;
+    public void attack(Roboter target) {
+        int damage = this.attackStrength - target.getDefense();
+        if (damage < 0) {
+            damage = 0;
+        }
+        target.verliereLeben(damage);
+
+        System.out.println("Roboter " + this.getAvatar() + " greift Roboter " + target.getAvatar() + "an und verursacht " + damage + " Schaden.");
+        System.out.println("Roboter " + target.getAvatar() + " hat jetzt " + target.getLeben() + " Leben. ");
+
+        if (target.istTot()) {
+            System.out.println("Roboter " + target.getAvatar() + " wurde besiegt!");
+            target.setTot(true);
+        }
+    }
+
+    @Override
+    public void setTot(boolean tot) {
+        // Implementiere die Logik, wenn ein Roboter zerstört wird
     }
 }

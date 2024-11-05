@@ -1,4 +1,4 @@
-public class Bewegung {
+public class Bewegung extends Movable {
     private Spielfeld spielfeld;
 
     public Bewegung(Spielfeld spielfeld) {
@@ -25,7 +25,7 @@ public class Bewegung {
                 y = (y < spielfeld.getSize() - 1) ? y + 1 : y;
                 break;
             default:
-                throw new IllegalArgumentException("Ungueltige Richtung: " + richtung);
+                throw new IllegalArgumentException("Ungueltige Richtung: " + richtung + ". Bitte (w/a/s/d) benutzen. ");
         }
         spieler.setPosition(x, y);
         spielfeld.setzeSpieler(x, y, spieler.getAvatar());
