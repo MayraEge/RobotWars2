@@ -1,20 +1,20 @@
-public abstract class RobotPlayer implements Movable, Attackable {
+public class RobotPlayer implements Movable, Attackable {
     protected int x;
     protected int y;
     protected int movement;
     protected int attackStrength;
     protected int attackRange;
-    protected int defense;
     protected int health;
+    protected boolean tot;
 
-    public RobotPlayer(int startX, int startY, int movement, int attackStrength, int attackRange, int defense, int health) {
+    public RobotPlayer(int startX, int startY, int movement, int attackStrength, int attackRange, int health) {
         this.x = startX;
         this.y = startY;
         this.movement = movement;
         this.attackStrength = attackStrength;
         this.attackRange = attackRange;
-        this.defense = defense;
         this.health = health;
+        this.tot = false;
     }
 
     public int getX() { return x; }
@@ -24,7 +24,8 @@ public abstract class RobotPlayer implements Movable, Attackable {
     public int getMovement() { return movement; }
     public int getAttackStrength() { return attackStrength; }
     public int getAttackRange() { return attackRange; }
-    public int getDefense() { return defense; }
+    public boolean isTot() {return tot;}
+
     public int getHealth() { return health; }
 
     @Override
@@ -54,17 +55,16 @@ public abstract class RobotPlayer implements Movable, Attackable {
     }
 
     @Override
-    public void verliereLeben(int damage) {
+    public void takeDamage(int damage) {
         health -= damage;
         if (health <= 0) {
             health = 0;
-            setTot(true);
+            tot = (true);
         }
     }
 
-    public boolean istTot() {
+    public boolean isDestroyed() {
         return health <= 0;
     }
 
-    public abstract void setTot(boolean tot);
 }

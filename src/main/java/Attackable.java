@@ -1,6 +1,4 @@
 public interface Attackable {
-    void attack(Roboter target);
-    void verliereLeben(int schaden);
-    boolean istTot();
-    int getLeben();
+    void takeDamage(int damage);
+    boolean isDestroyed();
 }

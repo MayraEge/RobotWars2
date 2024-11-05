@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class InitializePlayer {
-    public static Spieler initializePlayer(Scanner scanner, int startX, int startY, Spielfeld spielfeld) {
+    public static Spieler initializePlayer(Scanner scanner) {
         String name;
         do {
             System.out.println("Gib deinen Namen ein (max. 8 Zeichen): ");
@@ -12,11 +12,10 @@ public class InitializePlayer {
         }
         while (name.length() > 8);
 
-        System.out.println("Wähle deinen Avatar (*, §, #, $): ");
+        System.out.println("Wähle deinen Avatar (*/§/#/$): ");
         char avatar = scanner.next().charAt(0);
-        scanner.nextLine(); // Scanner leeren
-        int[] stats = RobotStats.waehleStats(scanner);
+        scanner.nextLine();
 
-        return new Spieler(startX, startY, avatar, spielfeld, stats[0], stats[1], stats[2], stats[3], stats[4]);
+        return new Spieler(name, avatar);
     }
 }

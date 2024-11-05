@@ -1,15 +1,15 @@
-public class Bewegung extends Movable {
+public class Bewegung {
     private Spielfeld spielfeld;
 
     public Bewegung(Spielfeld spielfeld) {
         this.spielfeld = spielfeld;
     }
 
-    public void bewegeSpieler(Spieler spieler, char richtung) {
-        int x = spieler.getX();
-        int y = spieler.getY();
+    public void moveRoboter(Roboter roboter, char richtung) {
+        int x = roboter.getX();
+        int y = roboter.getY();
 
-        spielfeld.entferneSpieler(x, y);
+        spielfeld.entferneRoboter(x, y);
 
         switch (richtung) {
             case 'w':
@@ -27,7 +27,7 @@ public class Bewegung extends Movable {
             default:
                 throw new IllegalArgumentException("Ungueltige Richtung: " + richtung + ". Bitte (w/a/s/d) benutzen. ");
         }
-        spieler.setPosition(x, y);
-        spielfeld.setzeSpieler(x, y, spieler.getAvatar());
+        roboter.move(x - roboter.getX(), y - roboter.getY());
+        spielfeld.setzeRoboter(x, y, roboter.getOwner().getAvatar());
     }
 }

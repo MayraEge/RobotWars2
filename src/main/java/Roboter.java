@@ -1,27 +1,37 @@
-public abstract class Roboter extends RobotPlayer {
-    public Roboter(int movement, int attackStrength, int attackRange, int health, int startX, int startY, int defense) {
-        super(startX, startY, movement, attackStrength, attackRange, defense, health);
+public class Roboter extends RobotPlayer {
+    private Spielfeld spielfeld;
+    private Spieler owner;
+
+    public Roboter(int x, int y, int movement, int attackStrength, int attackRange, int health, Spielfeld spielfeld, Spieler owner) {
+        super(x, y, movement, attackStrength, attackRange, health);
+        this.spielfeld = spielfeld;
+        this.owner = owner;
+    }
+
+    public Spieler getOwner() {
+        return owner;
+    }
+    public void attack (Roboter target){
+        if (this.isDestroyed()){
+            System.out.println("Der zerstörte Roboter kann nicht angreifen. ");
+            return;
+        }
+        if (target == null || target.isDestroyed()) {
+            System.out.println("Das Ziel ist ungültig oder bereits zerstört.");
+            return;
+        }
+
+        target.takeDamage(this.getAttackStrength());
+        System.out.println("Roboter von " + this.owner.getName() + " greift Roboter von " + target.getOwner().getName() + " an und verursacht " + this.getAttackStrength() + " Schaden.");
     }
 
     @Override
-    public void attack(Roboter target) {
-        int damage = this.attackStrength - target.getDefense();
-        if (damage < 0) {
-            damage = 0;
-        }
-        target.verliereLeben(damage);
-
-        System.out.println("Roboter " + this.getAvatar() + " greift Roboter " + target.getAvatar() + "an und verursacht " + damage + " Schaden.");
-        System.out.println("Roboter " + target.getAvatar() + " hat jetzt " + target.getLeben() + " Leben. ");
-
-        if (target.istTot()) {
-            System.out.println("Roboter " + target.getAvatar() + " wurde besiegt!");
-            target.setTot(true);
-        }
+    public void takeDamage(int damage) {
+        super.takeDamage(damage);
+        System.out.println("Roboter von " + owner.getName() + " nimmt " + damage + " Schaden. Übrige Gesundheit: " + getHealth());
     }
-
     @Override
-    public void setTot(boolean tot) {
-        // Implementiere die Logik, wenn ein Roboter zerstört wird
+    public boolean isDestroyed() {
+        return getHealth() <= 0;
     }
 }

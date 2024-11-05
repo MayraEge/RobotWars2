@@ -2,14 +2,14 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Spielfeld {
-    private List<Spieler> spielers;
+    private List<Roboter> roboterList;
     private int size;
     private char[][] feld;
 
     public Spielfeld(int size) {
         this.size = size;
         this.feld = new char[size][size];
-        this.spielers = new ArrayList<>();
+        this.roboterList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 feld[i][j] = ' ';
@@ -21,19 +21,24 @@ public class Spielfeld {
         return size;
     }
 
-    public boolean istSpielerAufFeld(int x, int y) {
+    public boolean istRoboterAufFeld(int x, int y) {
+        if (x < 0 || x >= size || y < 0 || y >= size) {
+            throw new ArrayIndexOutOfBoundsException("Index out of bounds: (" + x + ", " + y + ")");
+        }
         return feld[x][y] != ' ';
     }
 
-    public char getSpielerAufFeld(int x, int y) {
+    public char getRoboterAufFeld(int x, int y) {
         return feld[x][y];
     }
 
-    public void setzeSpieler(int x, int y, char avatar) {
+    public void setzeRoboter(int x, int y, char avatar) {
+        System.out.println("Setze Spieler an Position: (" + x + ", " + y + ")");
         feld[x][y] = avatar;
     }
 
-    public void entferneSpieler(int x, int y) {
+    public void entferneRoboter(int x, int y) {
+        System.out.println("Entferne Spieler von Position: (" + x + ", " + y + ")");
         feld[x][y] = ' ';
     }
 
@@ -54,20 +59,23 @@ public class Spielfeld {
         return feld[x][y] == ' ';
     }
 
-    public void addSpieler(Spieler spieler) {
-        spielers.add(spieler);
+    public void addRoboter(Roboter roboter) {
+        roboterList.add(roboter);
     }
 
-    public void removeSpieler(Spieler spieler) {
-        spielers.remove(spieler);
+    public void removeRoboter(Roboter roboter) {
+        roboterList.remove(roboter);
     }
 
-    public Spieler findeSpieler(char avatar) {
-        for (Spieler spieler : spielers) {
-            if (spieler.getAvatar() == avatar) {
-                return spieler;
+    public Roboter findeRoboter(char avatar) {
+        for (Roboter roboter : roboterList) {
+            if (roboter.getOwner().getAvatar() == avatar) {
+                return roboter;
             }
         }
         return null;
+    }
+    public List<Roboter>getRoboterList(){
+        return roboterList;
     }
 }
