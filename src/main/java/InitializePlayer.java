@@ -16,6 +16,6 @@ public class InitializePlayer {
         char avatar = scanner.next().charAt(0);
         scanner.nextLine();
 
-        return new Spieler(name, avatar);
+        return new Spieler(name, avatar, Colors);
     }
 }

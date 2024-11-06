@@ -25,7 +25,9 @@ public class Spielfeld {
         if (x < 0 || x >= size || y < 0 || y >= size) {
             throw new ArrayIndexOutOfBoundsException("Index out of bounds: (" + x + ", " + y + ")");
         }
-        return feld[x][y] != ' ';
+            boolean result = feld[x][y] != ' ';
+            System.out.println("istRoboterAufFeld(" + x + ", " + y + "): ");
+            return result;
     }
 
     public char getRoboterAufFeld(int x, int y) {
@@ -40,6 +42,7 @@ public class Spielfeld {
     public void entferneRoboter(int x, int y) {
         System.out.println("Entferne Spieler von Position: (" + x + ", " + y + ")");
         feld[x][y] = ' ';
+        roboterList.removeIf(roboter -> roboter.getX() == x && roboter.getY() == y);
     }
 
     public void zeigeSpielfeld() {
@@ -69,6 +72,7 @@ public class Spielfeld {
 
     public Roboter findeRoboter(char avatar) {
         for (Roboter roboter : roboterList) {
+            System.out.println("Überprüfe Roboter mit Avatar: " + roboter.getOwner().getAvatar());
             if (roboter.getOwner().getAvatar() == avatar) {
                 return roboter;
             }

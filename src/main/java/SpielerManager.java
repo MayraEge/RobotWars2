@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class SpielerManager {
@@ -7,6 +9,7 @@ public class SpielerManager {
     private Bewegung bewegung;
     private Angriff angriff;
     private boolean gameOver;
+    private Map<Character, Colors> spielerColors;
 
     public SpielerManager(Roboter roboter1, Roboter roboter2, Spielfeld spielfeld, Bewegung bewegung, Angriff angriff) {
         this.roboter1 = roboter1;
@@ -15,10 +18,39 @@ public class SpielerManager {
         this.bewegung = bewegung;
         this.angriff = angriff;
         this.gameOver = false;
+        this.spielerColors = new HashMap<>();
+    }
+    public void setColors(char avatar, Colors colors) {
+        spielerColors.put(avatar, colors);
     }
 
+    public Colors getColors(char avatar) {
+        return spielerColors.get(avatar);
+    }
+
+    public void chooseColors(char avatar) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Verfügbare Farben: ");
+        for (Colors colors : Colors.values()) {
+            System.out.println(colors);
+        }
+        System.out.print("Wähle eine Farbe für Avatar " + avatar + ": ");
+        String colorsName = scanner.nextLine().toUpperCase();
+        try {
+            Colors selectedColors = Colors.valueOf(colorsName);
+            setColors(avatar, selectedColors);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ungültige Farbe. Bitte wähle eine gültige Farbe.");
+            chooseColors(avatar);
+        }
+    }
     public void starteSpiel() {
         Scanner scanner = new Scanner(System.in);
+        System.out.println(roboter1.getOwner().getName() + ", wähle eine Farbe für deinen Avatar: ");
+        chooseColors(roboter1.getOwner().getAvatar());
+
+        System.out.println(roboter2.getOwner().getName() + ", wähle eine Farbe für deinen Avatar: ");
+        chooseColors(roboter2.getOwner().getAvatar());
 
         while (!gameOver) {
             spielfeld.zeigeSpielfeld();

@@ -6,8 +6,9 @@ public class RobotPlayer implements Movable, Attackable {
     protected int attackRange;
     protected int health;
     protected boolean tot;
+    private Bewegung bewegung;
 
-    public RobotPlayer(int startX, int startY, int movement, int attackStrength, int attackRange, int health) {
+    public RobotPlayer(int startX, int startY, int movement, int attackStrength, int attackRange, int health, Spielfeld spielfeld) {
         this.x = startX;
         this.y = startY;
         this.movement = movement;
@@ -15,6 +16,7 @@ public class RobotPlayer implements Movable, Attackable {
         this.attackRange = attackRange;
         this.health = health;
         this.tot = false;
+        this.bewegung = new Bewegung(spielfeld);
     }
 
     public int getX() { return x; }
@@ -25,34 +27,19 @@ public class RobotPlayer implements Movable, Attackable {
     public int getAttackStrength() { return attackStrength; }
     public int getAttackRange() { return attackRange; }
     public boolean isTot() {return tot;}
-
     public int getHealth() { return health; }
+
 
     @Override
     public void move(int deltaX, int deltaY) {
         this.x += deltaX;
         this.y += deltaY;
     }
-
     @Override
     public void move(char direction) {
-        switch (direction) {
-            case 'w':
-                move(-1, 0);
-                break;
-            case 's':
-                move(1, 0);
-                break;
-            case 'a':
-                move(0, -1);
-                break;
-            case 'd':
-                move(0, 1);
-                break;
-            default:
-                throw new IllegalArgumentException("Ungueltige Richtung: " + direction);
-        }
+        bewegung.moveRoboter((Roboter) this, direction);
     }
+
 
     @Override
     public void takeDamage(int damage) {

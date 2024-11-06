@@ -1,5 +1,3 @@
-import javax.swing.*;
-
 public class Angriff {
     private Spielfeld spielfeld;
     private Bewegung bewegung;
@@ -32,14 +30,15 @@ public class Angriff {
         System.out.println("Angreifer bewegt sich zu Position: (" + x + ", " + y + ")");
 
         if (spielfeld.istRoboterAufFeld(x, y)) {
-            Roboter getroffenerRoboter = findeRoboter(x, y);
-            if (getroffenerRoboter != null && getroffenerRoboter != angreifer) {
-                executeAttack(angreifer, getroffenerRoboter);
+            Roboter target = findeRoboter(x, y);
+            if (target != null && target != angreifer) {
+                executeAttack(angreifer, target);
             }
         } else {
             System.out.println("Kein Roboter auf Position: (" + x + ", " + y + ")");
         }
     }
+
     private Roboter findeRoboter(int x, int y) {
         char avatar = spielfeld.getRoboterAufFeld(x, y);
         for (Roboter roboter : spielfeld.getRoboterList()) {
@@ -50,14 +49,14 @@ public class Angriff {
         return null;
     }
 
-    private void executeAttack(Roboter angreifer, Roboter getroffenerRoboter) {
-        getroffenerRoboter.takeDamage(angreifer.getAttackStrength());
-        System.out.println("Roboter von Spieler " + angreifer.getOwner().getName() + " hat den Roboter von Spieler " + getroffenerRoboter.getOwner().getName() + " getroffen!");
-        System.out.println("Roboter von Spieler " + getroffenerRoboter.getOwner().getName() + " hat jetzt noch " + getroffenerRoboter.getHealth() + " Gesundheit.");
+    private void executeAttack(Roboter angreifer, Roboter target) {
+        target.takeDamage(angreifer.getAttackStrength());
+        System.out.println("Roboter von Spieler " + angreifer.getOwner().getName() + " hat den Roboter von Spieler " + target.getOwner().getName() + " getroffen!");
+        System.out.println("Roboter von Spieler " + target.getOwner().getName() + " hat jetzt noch " + target.getHealth() + " Gesundheit.");
 
-        if (getroffenerRoboter.isDestroyed()) {
-            System.out.println("Roboter von Spieler " + getroffenerRoboter.getOwner().getName() + " wurde zerstört!");
-            spielfeld.entferneRoboter(getroffenerRoboter.getX(), getroffenerRoboter.getY());
+        if (target.isDestroyed()) {
+            System.out.println("Roboter von Spieler " + target.getOwner().getName() + " wurde zerstört!");
+            spielfeld.entferneRoboter(target.getX(), target.getY());
         }
     }
 
@@ -72,10 +71,10 @@ public class Angriff {
 
             if (targetX >= 0 && targetX < spielfeld.getSize() && targetY >= 0 && targetY < spielfeld.getSize()) {
                 if (spielfeld.istRoboterAufFeld(targetX, targetY)) {
-                    Roboter getroffenerRoboter = findeRoboter(targetX, targetY);
-                    if (getroffenerRoboter != null && getroffenerRoboter != angreifer) {
+                    Roboter target = findeRoboter(targetX, targetY);
+                    if (target != null && target != angreifer) {
                         System.out.println("Roboter gefunden auf benachbartem Feld: (" + targetX + ", " + targetY + ")");
-                        executeAttack(angreifer, getroffenerRoboter);
+                        executeAttack(angreifer, target);
                     }
                 }
             }

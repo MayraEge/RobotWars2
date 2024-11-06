@@ -3,7 +3,7 @@ public class Roboter extends RobotPlayer {
     private Spieler owner;
 
     public Roboter(int x, int y, int movement, int attackStrength, int attackRange, int health, Spielfeld spielfeld, Spieler owner) {
-        super(x, y, movement, attackStrength, attackRange, health);
+        super(x, y, movement, attackStrength, attackRange, health, spielfeld);
         this.spielfeld = spielfeld;
         this.owner = owner;
     }
@@ -11,9 +11,11 @@ public class Roboter extends RobotPlayer {
     public Spieler getOwner() {
         return owner;
     }
-    public void attack (Roboter target){
-        if (this.isDestroyed()){
-            System.out.println("Der zerstörte Roboter kann nicht angreifen. ");
+    public void attack(Roboter target){
+        if (this.isDestroyed()) {
+            System.out.println("Der Roboter von Spieler " + target.getOwner().getName() + "wurde zerstört!");
+            spielfeld.entferneRoboter(target.getX(), target.getY());
+
             return;
         }
         if (target == null || target.isDestroyed()) {
@@ -22,7 +24,9 @@ public class Roboter extends RobotPlayer {
         }
 
         target.takeDamage(this.getAttackStrength());
-        System.out.println("Roboter von " + this.owner.getName() + " greift Roboter von " + target.getOwner().getName() + " an und verursacht " + this.getAttackStrength() + " Schaden.");
+        System.out.println("Roboter von Spieler " + this.owner.getName() + " greift Roboter von " + target.getOwner().getName() + " an und verursacht " + this.getAttackStrength() + " Schaden.");
+        System.out.println("Roboter von Spieler " + this.owner.getName() + " getroffen!");
+        System.out.println("Roboter von Spieler " + target.getOwner().getName() + " hat jetzt noch " + target.getHealth() + " Gesundheit.");
     }
 
     @Override
