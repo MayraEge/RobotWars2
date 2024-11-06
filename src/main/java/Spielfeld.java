@@ -45,13 +45,20 @@ public class Spielfeld {
         roboterList.removeIf(roboter -> roboter.getX() == x && roboter.getY() == y);
     }
 
-    public void zeigeSpielfeld() {
+    public void zeigeSpielfeld(SpielerManager spielerManager) {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (feld[i][j] == ' ') {
+                char avatar = feld[i][j];
+                if (avatar == ' ') {
                     System.out.print("[ ]");
                 } else {
-                    System.out.print("[" + feld[i][j] + "]");
+                    Colors colors = spielerManager.getColors(avatar);
+                    if (colors != null){
+                        System.out.print("[" + colors + avatar + "\u001B[0m]");
+                    } else {
+                        System.out.print("[" + avatar + "]");
+                    }
+
                 }
             }
             System.out.println();

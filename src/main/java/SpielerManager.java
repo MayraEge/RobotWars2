@@ -11,6 +11,7 @@ public class SpielerManager {
     private boolean gameOver;
     private Map<Character, Colors> spielerColors;
 
+    //Konstruktor
     public SpielerManager(Roboter roboter1, Roboter roboter2, Spielfeld spielfeld, Bewegung bewegung, Angriff angriff) {
         this.roboter1 = roboter1;
         this.roboter2 = roboter2;
@@ -28,36 +29,15 @@ public class SpielerManager {
         return spielerColors.get(avatar);
     }
 
-    public void chooseColors(char avatar) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Verfügbare Farben: ");
-        for (Colors colors : Colors.values()) {
-            System.out.println(colors);
-        }
-        System.out.print("Wähle eine Farbe für Avatar " + avatar + ": ");
-        String colorsName = scanner.nextLine().toUpperCase();
-        try {
-            Colors selectedColors = Colors.valueOf(colorsName);
-            setColors(avatar, selectedColors);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Ungültige Farbe. Bitte wähle eine gültige Farbe.");
-            chooseColors(avatar);
-        }
-    }
     public void starteSpiel() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println(roboter1.getOwner().getName() + ", wähle eine Farbe für deinen Avatar: ");
-        chooseColors(roboter1.getOwner().getAvatar());
-
-        System.out.println(roboter2.getOwner().getName() + ", wähle eine Farbe für deinen Avatar: ");
-        chooseColors(roboter2.getOwner().getAvatar());
 
         while (!gameOver) {
-            spielfeld.zeigeSpielfeld();
             // Spieler 1
             if (!gameOver) {
                 System.out.println(roboter1.getOwner().getName() + ", bewege dich (w/a/s/d) oder greife an (i/j/k/l): ");
                 handleAktion(scanner.next().charAt(0), roboter1);
+                spielfeld.zeigeSpielfeld(this);
                 if (roboter1.isDestroyed() || roboter2.isDestroyed()) {
                     gameOver = true;
                     System.out.println("Spiel beendet! Ein Roboter wurde zerstört.");
@@ -67,7 +47,7 @@ public class SpielerManager {
 
             // Spieler 2
             if (!gameOver) {
-                spielfeld.zeigeSpielfeld();
+                spielfeld.zeigeSpielfeld(this);
                 System.out.println(roboter2.getOwner().getName() + ", bewege dich (w/a/s/d) oder greife an (i/j/k/l): ");
                 handleAktion(scanner.next().charAt(0), roboter2);
                 if (roboter1.isDestroyed() || roboter2.isDestroyed()) {
