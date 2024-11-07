@@ -1,13 +1,13 @@
-public class Angriff {
-    private Spielfeld spielfeld;
-    private Bewegung bewegung;
+public abstract class Angriff implements Attackable{
+    protected Spielfeld spielfeld;
+    protected Bewegung bewegung;
 
     public Angriff(Spielfeld spielfeld, Bewegung bewegung) {
         this.spielfeld = spielfeld;
         this.bewegung = bewegung;
     }
 
-    public void greifeAn(Roboter angreifer, char richtung) {
+    public void attack(Roboter angreifer, char richtung) {
         int x = angreifer.getX();
         int y = angreifer.getY();
 
@@ -56,7 +56,7 @@ public class Angriff {
 
         if (target.isDestroyed()) {
             System.out.println("Roboter von Spieler " + target.getOwner().getName() + " wurde zerstört!");
-            spielfeld.entferneRoboter(target.getX(), target.getY());
+            spielfeld.removeRobot(target.getX(), target.getY());
         }
     }
 

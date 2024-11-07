@@ -1,4 +1,4 @@
-public class RobotPlayer implements Movable, Attackable {
+public abstract class RobotPlayer extends Angriff implements Movable {
     protected int x;
     protected int y;
     protected int movement;
@@ -6,9 +6,9 @@ public class RobotPlayer implements Movable, Attackable {
     protected int attackRange;
     protected int health;
     protected boolean tot;
-    private Bewegung bewegung;
 
-    public RobotPlayer(int startX, int startY, int movement, int attackStrength, int attackRange, int health, Spielfeld spielfeld) {
+    public RobotPlayer(int startX, int startY, int movement, int attackStrength, int attackRange, int health, Spielfeld spielfeld, Bewegung bewegung) {
+        super(spielfeld, bewegung);
         this.x = startX;
         this.y = startY;
         this.movement = movement;
@@ -32,12 +32,34 @@ public class RobotPlayer implements Movable, Attackable {
 
     @Override
     public void move(int deltaX, int deltaY) {
-        this.x += deltaX;
-        this.y += deltaY;
+        int distance = Math.abs(deltaX) + Math.abs(deltaY);
+        if (distance <= movement) {
+            this.x += deltaX;
+            this.y += deltaY;
+            System.out.println("Moved to(" + x + ", " + y + ")");
+        } else {
+            System.out.println("Bewegungsgrenze erreicht! ");
+        }
+
     }
     @Override
     public void move(char direction) {
+        int originalX = x;
+        int originalY = y;
+
         bewegung.moveRoboter((Roboter) this, direction);
+
+        int deltaX = Math.abs(x - originalX);
+        int deltaY = Math.abs(y - originalY);
+        int distance = deltaX + deltaY;
+
+//macht bewegung rueckgaengig falls limit erreicht
+        if (distance > movement){
+            this.x = originalX;
+            this.y = originalY;
+            System.out.println("Bewegungsgrenze erreicht! Bewegung wurde zurückgesetzt. ");
+
+        }
     }
 
 
@@ -48,10 +70,12 @@ public class RobotPlayer implements Movable, Attackable {
             health = 0;
             tot = (true);
         }
+        System.out.println("Schaden: " + damage + " Restliche Gesundheit: " + health);
     }
 
     public boolean isDestroyed() {
         return health <= 0;
     }
 
+    public abstract void attack(Roboter target);
 }

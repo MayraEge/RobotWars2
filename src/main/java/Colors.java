@@ -19,4 +19,10 @@ public enum Colors {
     public String toString() {
         return code + name() + "\u001B[0m";
     }
+
+    //public String getCode(){
+        //return code;
+    //}
+
+    public static final String RESET = "\u001B[0m";
 }

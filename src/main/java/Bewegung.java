@@ -5,13 +5,12 @@ public class Bewegung {
         this.spielfeld = spielfeld;
     }
 
-    public void moveRoboter(Roboter roboter, char richtung) {
+    public void moveRoboter(Roboter roboter, char direction) {
         int x = roboter.getX();
         int y = roboter.getY();
+        spielfeld.removeRobot(x, y);
 
-        spielfeld.entferneRoboter(x, y);
-
-        switch (richtung) {
+        switch (direction) {
             case 'w':
                 x = (x > 0) ? x - 1 : x;
                 break;
@@ -25,9 +24,11 @@ public class Bewegung {
                 y = (y < spielfeld.getSize() - 1) ? y + 1 : y;
                 break;
             default:
-                throw new IllegalArgumentException("Ungueltige Richtung: " + richtung + ". Bitte (w/a/s/d) benutzen. ");
+                throw new IllegalArgumentException("Ungueltige Richtung: " + direction + ". Bitte (w/a/s/d) benutzen. ");
         }
-        roboter.move(x - roboter.getX(), y - roboter.getY());
-        spielfeld.setzeRoboter(x, y, roboter.getOwner().getAvatar());
+        roboter.setX(x);
+        roboter.setY(y);
+        //roboter.move(x - roboter.getX(), y - roboter.getY());
+        spielfeld.setRobot(x, y, roboter.getOwner().getAvatar());
     }
 }

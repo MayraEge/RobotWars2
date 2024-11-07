@@ -21,6 +21,14 @@ public class Spielfeld {
         return size;
     }
 
+    public int getHeight() {
+        return size;
+    }
+
+    public int getWidth(){
+        return size;
+    }
+
     public boolean istRoboterAufFeld(int x, int y) {
         if (x < 0 || x >= size || y < 0 || y >= size) {
             throw new ArrayIndexOutOfBoundsException("Index out of bounds: (" + x + ", " + y + ")");
@@ -34,15 +42,23 @@ public class Spielfeld {
         return feld[x][y];
     }
 
-    public void setzeRoboter(int x, int y, char avatar) {
+    public void setRobot(int x, int y, char avatar) {
         System.out.println("Setze Spieler an Position: (" + x + ", " + y + ")");
         feld[x][y] = avatar;
     }
 
-    public void entferneRoboter(int x, int y) {
+    public void removeRobot(int x, int y) {
         System.out.println("Entferne Spieler von Position: (" + x + ", " + y + ")");
         feld[x][y] = ' ';
         roboterList.removeIf(roboter -> roboter.getX() == x && roboter.getY() == y);
+    }
+    public Roboter getPosition(int x, int y) {
+        for (Roboter roboter : roboterList) {
+            if (roboter.getX() == x && roboter.getY() == y) {
+                return roboter;
+            }
+        }
+        return null;
     }
 
     public void zeigeSpielfeld(SpielerManager spielerManager) {
@@ -54,7 +70,7 @@ public class Spielfeld {
                 } else {
                     Colors colors = spielerManager.getColors(avatar);
                     if (colors != null){
-                        System.out.print("[" + colors + avatar + "\u001B[0m]");
+                        System.out.print("[" + colors + avatar + Colors.RESET + "]");
                     } else {
                         System.out.print("[" + avatar + "]");
                     }

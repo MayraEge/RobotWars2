@@ -9,35 +9,47 @@ public class SpielerManager {
     private Bewegung bewegung;
     private Angriff angriff;
     private boolean gameOver;
-    private Map<Character, Colors> spielerColors;
+    private Map<Character, Colors> avatarColors;
+    private Scanner scanner;
 
     //Konstruktor
-    public SpielerManager(Roboter roboter1, Roboter roboter2, Spielfeld spielfeld, Bewegung bewegung, Angriff angriff) {
+    public SpielerManager(Roboter roboter1, Roboter roboter2, Spielfeld spielfeld, Bewegung bewegung, Angriff angriff, Scanner scanner) {
         this.roboter1 = roboter1;
         this.roboter2 = roboter2;
         this.spielfeld = spielfeld;
         this.bewegung = bewegung;
         this.angriff = angriff;
         this.gameOver = false;
-        this.spielerColors = new HashMap<>();
+        this.avatarColors = new HashMap<>();
+        this.scanner = scanner;
     }
+
+    public void setRoboter1(Roboter roboter1){
+        this.roboter1 = roboter1;
+    }
+
+    public void setRoboter2(Roboter roboter2){
+        this.roboter2 = roboter2;
+    }
+
     public void setColors(char avatar, Colors colors) {
-        spielerColors.put(avatar, colors);
+        avatarColors.put(avatar, colors);
     }
 
     public Colors getColors(char avatar) {
-        return spielerColors.get(avatar);
+        return avatarColors.get(avatar);
     }
 
     public void starteSpiel() {
-        Scanner scanner = new Scanner(System.in);
+        spielfeld.zeigeSpielfeld(this);
 
         while (!gameOver) {
             // Spieler 1
             if (!gameOver) {
+                spielfeld.zeigeSpielfeld(this);
                 System.out.println(roboter1.getOwner().getName() + ", bewege dich (w/a/s/d) oder greife an (i/j/k/l): ");
                 handleAktion(scanner.next().charAt(0), roboter1);
-                spielfeld.zeigeSpielfeld(this);
+
                 if (roboter1.isDestroyed() || roboter2.isDestroyed()) {
                     gameOver = true;
                     System.out.println("Spiel beendet! Ein Roboter wurde zerstört.");
@@ -64,8 +76,22 @@ public class SpielerManager {
         if (aktion == 'w' || aktion == 'a' || aktion == 's' || aktion == 'd') {
             bewegung.moveRoboter(roboter, aktion);
         } else if (aktion == 'i' || aktion == 'j' || aktion == 'k' || aktion == 'l') {
-            angriff.greifeAn(roboter, aktion);
+            angriff.attack(roboter, aktion);
             angriff.attackCloseField(roboter); // Checke und greife benachbarte Felder an
+        }
+    }
+    public void zeigeSpielfeld() {
+        for (int i = 0; i < spielfeld.getHeight(); i++) {
+            for (int j = 0; j < spielfeld.getWidth(); j++) {
+                if (spielfeld.getPosition(i, j) == roboter1) {
+                    System.out.print(roboter1.getOwner().getColors().toString() + "[R]" + Colors.RESET);
+                } else if (spielfeld.getPosition(i, j) == roboter2) {
+                    System.out.print(roboter2.getOwner().getColors().toString() + "[O]" + Colors.RESET);
+                } else {
+                    System.out.print("[ ]");
+                }
+            }
+            System.out.println();
         }
     }
 }

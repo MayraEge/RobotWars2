@@ -1,9 +1,9 @@
-public class Roboter extends RobotPlayer {
-    private Spielfeld spielfeld;
+public class Roboter extends RobotPlayer{
+    //private Spielfeld spielfeld;
     private Spieler owner;
 
-    public Roboter(int x, int y, int movement, int attackStrength, int attackRange, int health, Spielfeld spielfeld, Spieler owner) {
-        super(x, y, movement, attackStrength, attackRange, health, spielfeld);
+    public Roboter(int x, int y, int movement, int attackStrength, int attackRange, int health, Spielfeld spielfeld, Bewegung bewegung, Spieler owner) {
+        super(x, y, movement, attackStrength, attackRange, health, spielfeld, bewegung);
         this.spielfeld = spielfeld;
         this.owner = owner;
     }
@@ -11,31 +11,29 @@ public class Roboter extends RobotPlayer {
     public Spieler getOwner() {
         return owner;
     }
-    public void attack(Roboter target){
-        if (this.isDestroyed()) {
-            System.out.println("Der Roboter von Spieler " + target.getOwner().getName() + "wurde zerstört!");
-            spielfeld.entferneRoboter(target.getX(), target.getY());
-
-            return;
-        }
+    @Override
+    public void attack(Roboter target) {
         if (target == null || target.isDestroyed()) {
             System.out.println("Das Ziel ist ungültig oder bereits zerstört.");
             return;
         }
-
-        target.takeDamage(this.getAttackStrength());
-        System.out.println("Roboter von Spieler " + this.owner.getName() + " greift Roboter von " + target.getOwner().getName() + " an und verursacht " + this.getAttackStrength() + " Schaden.");
-        System.out.println("Roboter von Spieler " + this.owner.getName() + " getroffen!");
-        System.out.println("Roboter von Spieler " + target.getOwner().getName() + " hat jetzt noch " + target.getHealth() + " Gesundheit.");
+        int distance = Math.abs(target.getX() - getX()) + Math.abs(target.getX() - getY());
+        if (distance <= getAttackRange()) {
+            target.takeDamage(getAttackStrength());
+            System.out.println("Roboter von Spieler" + owner.getName() + " greift Roboter von " + target.getOwner().getName() + " an und verursacht " + getAttackStrength() + " Schaden. ");
+            if (target.isDestroyed()) {
+                System.out.println("Der Roboter von Spieler " + target.getOwner().getName() + " wurde zerstört!");
+            }
+            // Entferne den Roboter vom Spielfeld
+            //spielfeld.removeRobot(target.getX(), target.getY());
+        } else {
+            System.out.println("Ziel ist außerhalb der Angriffsreichweite! ");
+        }
     }
 
     @Override
     public void takeDamage(int damage) {
         super.takeDamage(damage);
         System.out.println("Roboter von " + owner.getName() + " nimmt " + damage + " Schaden. Übrige Gesundheit: " + getHealth());
-    }
-    @Override
-    public boolean isDestroyed() {
-        return getHealth() <= 0;
     }
 }
