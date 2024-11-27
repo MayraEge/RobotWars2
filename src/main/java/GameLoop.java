@@ -1,40 +1,40 @@
 import java.util.Scanner;
 
 public class GameLoop {
-    private RobotManager robotManager;
-    private Spielfeld spielfeld;
-    private SpielerManager spielerManager;
-    private Angriff angriff;
-    private boolean gameOver;
+    private Spielfeld gameboard;
+    private Spieler[] players;
 
-    public GameLoop(RobotManager robotManager, Spielfeld spielfeld, SpielerManager spielerManager, Angriff angriff) {
-        this.robotManager = robotManager;
-        this.spielfeld = spielfeld;
-        this.spielerManager = spielerManager;
-        this.angriff = angriff;
-        this.gameOver = false;
+
+    public GameLoop(Spielfeld gameboard, Spieler[] players) {
+        this.gameboard = gameboard;
+        this.players = players;
+
     }
 
-    public void start(Scanner scanner) {
-        while (!gameOver) {
-            for (Roboter roboter : robotManager.getRobots()) {
-                System.out.println(roboter.getOwner().getName() + ", bewege dich (w/a/s/d) oder greife an (i/j/k/l): ");
-                char action = scanner.next().charAt(0);
-                if (action == 'w' || action == 'a' || action == 's' || action == 'd') {
-                    robotManager.moveRobot(roboter, action);
-                } else if (action == 'i' || action == 'j' || action == 'k' || action == 'l') {
-                    angriff.attack(roboter, action);
+    public void start() {
+        boolean gameOver = false;
+        do {
+            for (Spieler player : players) {
+                Roboter roboter = player.getRoboter();
+                System.out.println(player.getRoboter().getOwner().getName() + ", bewege dich (w/a/s/d) oder greife an (i/j/k/l): ");
+                char actionDirection = scanner.next().charAt(0);
+                if (actionDirection == 'w' || actionDirection == 'a' || actionDirection == 's' || actionDirection == 'd') {
+                    roboter.move(actionDirection);
+                } else if (actionDirection == 'i' || actionDirection == 'j' || actionDirection == 'k' || actionDirection == 'l') {
+                    gameboard.tryAttack(roboter,actionDirection); //TODO make robot attack with the actionDirection
                 } else {
                     System.out.println("Ungültige Eingabe. Bitte versuche es erneut.");
                 }
-                spielfeld.zeigeSpielfeld(spielerManager);
-                if (roboter.isDestroyed()) {
+                gameboard.zeigeSpielfeld(players); //TODO make playfield use playerarray to work
+                if (roboter.isTot()) {
                     gameOver = true;
                     System.out.println("Spieler " + roboter.getOwner().getName() + " hat verloren!");
                     break;
                 }
             }
-        }
+
+        } while (!gameOver);
+
     }
 }
 

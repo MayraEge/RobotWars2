@@ -1,19 +1,12 @@
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
-public class SpielerManager {
-    private Roboter roboter1;
-    private Roboter roboter2;
+public class TankGame {
+    private Spieler[] players;
     private Spielfeld spielfeld;
-    private Bewegung bewegung;
-    private Angriff angriff;
-    private boolean gameOver;
-    private Map<Character, Colors> avatarColors;
-    private Scanner scanner;
 
     //Konstruktor
-    public SpielerManager(Roboter roboter1, Roboter roboter2, Spielfeld spielfeld, Bewegung bewegung, Angriff angriff, Scanner scanner) {
+    public TankGame(Roboter roboter1, Roboter roboter2, Spielfeld spielfeld, Bewegung bewegung, Angriff angriff, Scanner scanner) {
         this.roboter1 = roboter1;
         this.roboter2 = roboter2;
         this.spielfeld = spielfeld;
@@ -24,6 +17,15 @@ public class SpielerManager {
         this.scanner = scanner;
     }
 
+    private chooseBots(){
+        Scanner scanner = new Scanner();
+        for(Spieler player : players){
+        player.setRoboter(scanner.fragNachRoboter()...);
+
+    }
+
+        private chooseMove
+
     public void setRoboter1(Roboter roboter1){
         this.roboter1 = roboter1;
     }
@@ -32,16 +34,22 @@ public class SpielerManager {
         this.roboter2 = roboter2;
     }
 
-    public void setColors(char avatar, Colors colors) {
-        avatarColors.put(avatar, colors);
+    public void setColors(char avatar, Color color) {
+        avatarColors.put(avatar, color);
     }
 
-    public Colors getColors(char avatar) {
+    public Color getColors(char avatar) {
         return avatarColors.get(avatar);
     }
 
     public void starteSpiel() {
-        spielfeld.zeigeSpielfeld(this);
+
+            chooseBots();
+            do{
+                chooseMove();
+            }while (!gameOver);
+
+        }
 
         while (!gameOver) {
             // Spieler 1
@@ -84,9 +92,9 @@ public class SpielerManager {
         for (int i = 0; i < spielfeld.getHeight(); i++) {
             for (int j = 0; j < spielfeld.getWidth(); j++) {
                 if (spielfeld.getPosition(i, j) == roboter1) {
-                    System.out.print(roboter1.getOwner().getColors().toString() + "[R]" + Colors.RESET);
+                    System.out.print(roboter1.getOwner().getColors().toString() + "[R]" + Color.RESET);
                 } else if (spielfeld.getPosition(i, j) == roboter2) {
-                    System.out.print(roboter2.getOwner().getColors().toString() + "[O]" + Colors.RESET);
+                    System.out.print(roboter2.getOwner().getColors().toString() + "[O]" + Color.RESET);
                 } else {
                     System.out.print("[ ]");
                 }

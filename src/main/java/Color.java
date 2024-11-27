@@ -1,4 +1,5 @@
-public enum Colors {
+
+public enum Color {
     RED("\u001B[31m"),
     BLUE("\u001B[34m"),
     GREEN("\u001B[32m"),
@@ -11,7 +12,7 @@ public enum Colors {
 
     private final String code;
 
-    Colors(String code) {
+    Color(String code) {
         this.code = code;
     }
 

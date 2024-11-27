@@ -1,14 +1,21 @@
-import java.awt.*;
-
 public class Spieler {
     private char avatar;
     private String name;
-    private Colors colors;
+    private Color color;
+    private Roboter roboter;
 
-    public Spieler(String name, char avatar, Colors colors) {
+    public Spieler(String name, char avatar, Color color) {
         this.avatar = avatar;
         this.name = name;
-        this.colors =  colors;
+        this.color = color;
+    }
+
+    public void setRoboter(Roboter roboter) {
+        this.roboter = roboter;
+    }
+
+    public Roboter getRoboter() {
+        return roboter;
     }
 
     public char getAvatar() {
@@ -19,8 +26,8 @@ public class Spieler {
         return name;
     }
 
-    public Colors getColors(){
-        return colors;
+    public Color getColors() {
+        return color;
     }
 
 }

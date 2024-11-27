@@ -1,11 +1,9 @@
 public class Roboter extends RobotPlayer{
     //private Spielfeld spielfeld;
-    private Spieler owner;
+
 
     public Roboter(int x, int y, int movement, int attackStrength, int attackRange, int health, Spielfeld spielfeld, Bewegung bewegung, Spieler owner) {
         super(x, y, movement, attackStrength, attackRange, health, spielfeld, bewegung);
-        this.spielfeld = spielfeld;
-        this.owner = owner;
     }
 
     public Spieler getOwner() {
@@ -35,5 +33,9 @@ public class Roboter extends RobotPlayer{
     public void takeDamage(int damage) {
         super.takeDamage(damage);
         System.out.println("Roboter von " + owner.getName() + " nimmt " + damage + " Schaden. Übrige Gesundheit: " + getHealth());
+    }
+
+    public boolean isDeath() {
+        return this.health == 0;
     }
 }

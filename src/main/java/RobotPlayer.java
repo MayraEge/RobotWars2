@@ -1,39 +1,61 @@
-public abstract class RobotPlayer extends Angriff implements Movable {
+public abstract class RobotPlayer implements Attackable, Movable {
     protected int x;
     protected int y;
-    protected int movement;
+    protected int movementRange;
     protected int attackStrength;
     protected int attackRange;
     protected int health;
-    protected boolean tot;
 
-    public RobotPlayer(int startX, int startY, int movement, int attackStrength, int attackRange, int health, Spielfeld spielfeld, Bewegung bewegung) {
-        super(spielfeld, bewegung);
+    public RobotPlayer(int startX, int startY, int movementRange, int attackStrength, int attackRange, int health, Spielfeld spielfeld, Bewegung bewegung) {
         this.x = startX;
         this.y = startY;
-        this.movement = movement;
+        this.movementRange = movementRange;
         this.attackStrength = attackStrength;
         this.attackRange = attackRange;
         this.health = health;
-        this.tot = false;
-        this.bewegung = new Bewegung(spielfeld);
     }
 
-    public int getX() { return x; }
-    public int getY() { return y; }
-    public void setX(int x) { this.x = x; }
-    public void setY(int y) { this.y = y; }
-    public int getMovement() { return movement; }
-    public int getAttackStrength() { return attackStrength; }
-    public int getAttackRange() { return attackRange; }
-    public boolean isTot() {return tot;}
-    public int getHealth() { return health; }
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getMovementRange() {
+        return movementRange;
+    }
+
+    public int getAttackStrength() {
+        return attackStrength;
+    }
+
+    public int getAttackRange() {
+        return attackRange;
+    }
+
+    public boolean isTot() {
+        return health<=0;
+    }
+
+    public int getHealth() {
+        return health;
+    }
 
 
     @Override
     public void move(int deltaX, int deltaY) {
         int distance = Math.abs(deltaX) + Math.abs(deltaY);
-        if (distance <= movement) {
+        if (distance <= movementRange) {
             this.x += deltaX;
             this.y += deltaY;
             System.out.println("Moved to(" + x + ", " + y + ")");
@@ -42,6 +64,7 @@ public abstract class RobotPlayer extends Angriff implements Movable {
         }
 
     }
+
     @Override
     public void move(char direction) {
         int originalX = x;
@@ -54,7 +77,7 @@ public abstract class RobotPlayer extends Angriff implements Movable {
         int distance = deltaX + deltaY;
 
 //macht bewegung rueckgaengig falls limit erreicht
-        if (distance > movement){
+        if (distance > movementRange) {
             this.x = originalX;
             this.y = originalY;
             System.out.println("Bewegungsgrenze erreicht! Bewegung wurde zurückgesetzt. ");
